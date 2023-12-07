@@ -1,9 +1,9 @@
-const Card = ({comments}) => {
+const Comments = ({comments}) => {
   return (
     <>
         {comments.map((comment, index) => {
           return (
-            <div key={index} className="container || flex items-center justify-between gap-2 py-3 px-3 bg-cardClr">
+            <div key={index} className="container || flex items-center justify-between gap-2 py-3 px-3 bg-cardClr text-white">
             <div className="user_content || flex gap-4 items-center overflow-y-hidden">
               <span className="icon || w-12 aspect-square rounded-full overflow-hidden bg-accentClr-lighter"><img src={comment.profile} alt=""/></span>
               <span className="comment || overflow-hidden whitespace-nowrap text-clip">{comment.content}</span>
@@ -16,4 +16,4 @@ const Card = ({comments}) => {
   )
 }
 
-export default Card
+export default Comments

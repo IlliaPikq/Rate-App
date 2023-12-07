@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import Button from "./components/Button";
 import Comments from './components/Comments';
 import Message from "./components/Message";
@@ -10,11 +10,11 @@ import './global.css';
 function App() {
 
   function displayStars() {
-    let stars = []
+    let starsComponents = []
     for(let id = 1; id < 6; id++) {
-      stars.push(<Star key={id} id={id} isSelected={id <= starSelected} setStarSelected={setStarSelected}/>)
+      starsComponents.push(<Star key={id} id={id} isSelected={id <= starSelected} setStarSelected={setStarSelected}/>)
     }
-    return stars
+    return starsComponents
   }
   
   function onSubmit(e) {
@@ -52,6 +52,11 @@ function App() {
   const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
   const [showMessage, setShowMessage] = useState(false)
 
+
+  const MemoizedComments = memo(Comments)
+  // eslint-disable-next-line
+  const MomoizedStars = useMemo(() => displayStars(), [starSelected])
+
   return (
       <div className="page || min-h-screen bg-backgroundClr text-grey">
         <header className="flex justify-end gap-5 py-5 px-5">
@@ -74,7 +79,7 @@ function App() {
       }
       <div className='wrapper || w-full md:w-4/5 2xl:w-4/6 m-auto px-6'>
       <div className="rate_block || flex justify-center gap-3 py-8">
-        {displayStars()}
+        {MomoizedStars}
       </div>
         <form onSubmit={(e) => onSubmit(e)} className="formContainer || flex justify-between gap-4 text-white">
           <input type="text"
@@ -84,7 +89,7 @@ function App() {
           <Button>Add comment</Button>
         </form>
         <div className="commentsContainer || mt-16 grid gap-5 self-center ">
-          <Comments comments={comments} />
+          <MemoizedComments comments={comments} />
         </div>
       </div>
     </div>
